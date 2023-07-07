@@ -92,7 +92,7 @@ except:
 
 
 try:
-   @app.get('/api/image')
+   @app.get('/api/get-image')
    def get_image():
 
       # Make sure the image_id is sent
@@ -109,9 +109,6 @@ try:
          return make_response(jsonify("Invalid image id"), 400)
 
             
-
-      # Use the built in flask function send_from_directory
-      # First into the images folder, and then use my results from my DB interaction to get the name of the file
       return send_from_directory('/home/cameron/Documents/images', results[0]['file_name'])
 
 except TypeError:
@@ -119,6 +116,36 @@ except TypeError:
    
 except: 
    print('something went wrong')
+   
+   
+try:
+   @app.get('/api/images')
+   def get_images():
+
+   
+                  
+      # Get the image information from the DB
+      results = dbhelper.run_proceedure('CALL get_all()', [])
+      # Make sure something came back from the DB that wasn't an error
+      if(type(results) != list):
+         return make_response(jsonify(str(results)), 500)
+      elif(len(results) == 0):
+         return make_response(jsonify("Invalid image id"), 400)
+
+            
+
+      # Use the built in flask function send_from_directory
+      # First into the images folder, and then use my results from my DB interaction to get the name of the file
+      
+      
+      
+      return send_from_directory('/home/cameron/Documents/images', results[0]['file_name'])
+
+except TypeError:
+   print('Invalid entry, try again')
+   
+except: 
+   print('something went wrong')   
 if(dbcreds.production_mode == True):
    print()
    print('----Running in Production Mode----')
