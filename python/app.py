@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response, send_from_directory, jsonify
-import dbhelper,api_helper,dbcreds, uuid
+import dbhelper,api_helper,dbcreds, uuid,time
 
 app = Flask(__name__)
 
@@ -70,18 +70,28 @@ try:
       if(is_valid != None):
          return make_response(jsonify(is_valid), 400)
       
-      filename = api_helper.save_file(request.files['uploaded_image'])
-      # If the filename is None something has gone wrong
-      if(filename == None):
-         return make_response(jsonify("Sorry, something has gone wrong"), 500)
       
       
-      results = dbhelper.run_proceedure('CALL image_create(?,?,?)', [filename, request.form['description'], request.form['type']])
-
-      if(type(results) == list):
-         return make_response(jsonify('Success'), 200)
-      else:
-         return make_response(jsonify(str(results)), 500)
+      results = []
+      file_count = 0
+      for file in request.files.getlist('uploaded_image'):
+         filename = api_helper.save_file(file)
+         # If the filename is None, something has gone wrong
+         if filename is None:
+               return make_response(jsonify("Sorry, something has gone wrong"), 500)
+         
+         result = dbhelper.run_proceedure('CALL image_create(?,?,?)', [filename, request.form['description'], request.form['type']])
+         
+         if (type(results)==list):
+               results.append('Success')
+         else:
+               results.append(str(result))
+               
+         file_count += 1
+         if file_count % 5 == 0:
+            time.sleep(10)
+      
+      return make_response(jsonify(results), 200)
          
    
 except TypeError:
