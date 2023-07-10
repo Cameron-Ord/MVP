@@ -89,7 +89,7 @@ try:
                
          file_count += 1
          if file_count % 5 == 0:
-            time.sleep(2)
+            time.sleep(5)
       
       return make_response(jsonify(results), 200)
          
