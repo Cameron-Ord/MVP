@@ -14,7 +14,7 @@ def check_endpoint_info(sent_data, expected_data):
 
 def save_file(file):
 
-    file_path = '/home/cameron/Documents/images'
+    file_path = '/home/cameron/Documents/Photostream/mvp_frontend/public/images'
     
     if('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['gif', 'png', 'jpg', 'jpeg', 'webp', 'pdf']):
         filename = uuid4().hex + '.' +file.filename.rsplit('.', 1)[1].lower()

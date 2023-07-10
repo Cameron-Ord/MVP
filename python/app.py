@@ -61,7 +61,7 @@ try:
    #function gets called on api request
    def image_upload():
    
-      is_valid = api_helper.check_endpoint_info(request.form, ['description'])
+      is_valid = api_helper.check_endpoint_info(request.form, ['description', 'type'])
       
       if(is_valid != None):
          return make_response(jsonify(is_valid), 400)
@@ -76,7 +76,7 @@ try:
          return make_response(jsonify("Sorry, something has gone wrong"), 500)
       
       
-      results = dbhelper.run_proceedure('CALL image_create(?,?)', [filename, request.form['description']])
+      results = dbhelper.run_proceedure('CALL image_create(?,?,?)', [filename, request.form['description'], request.form['type']])
 
       if(type(results) == list):
          return make_response(jsonify('Success'), 200)
@@ -92,16 +92,15 @@ except:
 
 
 try:
-   @app.get('/api/get-image')
-   def get_image():
+   @app.get('/api/images-date')
+   def get_image_date():
 
-      # Make sure the image_id is sent
-      is_valid = api_helper.check_endpoint_info(request.args, ['image_id'])
+      is_valid = api_helper.check_endpoint_info(request.args, ['type'])
       if(is_valid != None):
          return make_response(jsonify(is_valid), 400)
                   
       # Get the image information from the DB
-      results = dbhelper.run_proceedure('CALL get_specific_image(?)', [request.args.get('image_id')])
+      results = dbhelper.run_proceedure('CALL get_last_image(?,?)', [request.args.get('created_at'), request.args.get('type')])
       # Make sure something came back from the DB that wasn't an error
       if(type(results) != list):
          return make_response(jsonify(str(results)), 500)
@@ -109,7 +108,7 @@ try:
          return make_response(jsonify("Invalid image id"), 400)
 
             
-      return send_from_directory('/home/cameron/Documents/images', results[0]['file_name'])
+      return make_response(jsonify(results), 200)
 
 except TypeError:
    print('Invalid entry, try again')
@@ -122,10 +121,12 @@ try:
    @app.get('/api/images')
    def get_images():
 
-   
+      is_valid = api_helper.check_endpoint_info(request.args, ['type'])
+      if(is_valid != None):
+         return make_response(jsonify(is_valid), 400)
                   
       # Get the image information from the DB
-      results = dbhelper.run_proceedure('CALL get_all()', [])
+      results = dbhelper.run_proceedure('CALL get_all(?,?)', [request.args.get('created_at'), request.args.get('type')])
       # Make sure something came back from the DB that wasn't an error
       if(type(results) != list):
          return make_response(jsonify(str(results)), 500)
@@ -137,9 +138,21 @@ try:
       # Use the built in flask function send_from_directory
       # First into the images folder, and then use my results from my DB interaction to get the name of the file
       
-      
-      
-      return send_from_directory('/home/cameron/Documents/images', results[0]['file_name'])
+      images = []
+
+      # Iterate over each result and create an image object
+      for result in results:
+         image = {
+            
+            'file_name': result['file_name'],
+            'file_path': '/images/' + result['file_name'],
+            'created_at': result['created_at'],
+            'type':  result['type']
+         }
+
+         images.append(image)
+    
+      return make_response(jsonify(images), 200)
 
 except TypeError:
    print('Invalid entry, try again')

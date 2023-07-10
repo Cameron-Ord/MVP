@@ -75,9 +75,10 @@ CREATE TABLE `images` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `file_name` varchar(500) DEFAULT NULL,
   `description` varchar(300) DEFAULT NULL,
-  `created_at` date DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +87,7 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
-INSERT INTO `images` VALUES (7,'e9a667a61598418d9ed41e15157658b4.jpg','this is a description','2023-07-06');
+INSERT INTO `images` VALUES (44,'a449e4eb7f2342648c863ea32e03ae11.jpg','this is a description','2023-07-09 18:57:57','summer'),(45,'acd4bf8162894b1d8e89ab459e51dd92.jpg','this is a description','2023-07-09 18:58:02','summer'),(46,'51b221b20d844722a028f8fcff129636.jpg','this is a description','2023-07-09 18:58:05','summer'),(47,'1357e20671024e18aba8ee5c4ecd75d6.jpg','this is a description','2023-07-09 18:58:34','summer'),(48,'433e9860ee1c40c5a34b688cce9b9acf.jpg','this is a description','2023-07-09 18:59:29','summer'),(52,'e136f47fad1d411c9c5fad30cc25c627.jpg','this is a description','2023-07-09 23:03:23','summer'),(53,'13bc4322ca274501b81c2e6352672b0d.jpg','this is a description','2023-07-09 23:04:02','summer'),(54,'1ce54d3ef776436ba10a12d151ecd2e7.jpg','this is a description','2023-07-09 23:04:03','summer');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -139,6 +140,107 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_all` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all`(created_at_input DATETIME, type_input varchar(100))
+BEGIN
+	
+ DECLARE result_count INT;
+    
+    SELECT COUNT(*) INTO result_count
+    FROM images
+    WHERE created_at > created_at_input AND `type` = type_input;
+    
+    IF result_count > 0 and created_at_input is not null or result_count > 0 and (select created_at from images order by created_at desc limit 1) != created_at_input THEN
+        SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
+        FROM images
+        WHERE created_at > created_at_input AND `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5;
+       
+    ELSEIF (select created_at from images order by created_at desc limit 1) = created_at_input then
+        SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
+        FROM images
+        WHERE created_at = created_at_input AND `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5;
+    
+    ELSEif created_at_input is null then
+        SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
+        FROM images
+        WHERE `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5;
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_last_image` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_last_image`(created_at_input DATETIME, type_input varchar(100))
+BEGIN
+		if created_at_input is null then
+
+    SELECT convert(created_at using "utf8") as created_at
+    FROM (
+        SELECT convert(created_at using "utf8") as created_at
+        FROM images where `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5
+    ) AS subquery
+    ORDER BY created_at ASC
+    LIMIT 1;
+	    
+	
+      ELSEIF created_at_input is not null and (select created_at from images order by created_at desc limit 1) != created_at_input then
+       SELECT convert(created_at using "utf8") as created_at
+    FROM (
+        SELECT convert(created_at using "utf8") as created_at
+        FROM images where created_at > created_at_input and `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5
+    ) AS subquery
+    ORDER BY created_at ASC
+    LIMIT 1;
+       
+      else
+      SELECT convert(created_at using "utf8") as created_at
+    FROM (
+        SELECT convert(created_at using "utf8") as created_at
+        FROM images where created_at = created_at_input and `type` = type_input
+        ORDER BY created_at ASC
+        LIMIT 5
+    ) AS subquery
+    ORDER BY created_at ASC
+    limit 1;
+
+
+    end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_specific_image` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -166,10 +268,10 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `image_create`(file_name_input varchar(500), description_input varchar(300))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `image_create`(file_name_input varchar(500), description_input varchar(300), type_input varchar(100))
     MODIFIES SQL DATA
 BEGIN
-	INSERT INTO images(file_name, description, created_at) VALUES (file_name_input, description_input, now());
+	INSERT INTO images(file_name, description,`type`, created_at) VALUES (file_name_input, description_input, type_input ,now());
 	SELECT LAST_INSERT_ID();
 	COMMIT;
 END ;;
@@ -188,4 +290,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-06 17:11:20
+-- Dump completed on 2023-07-10  0:48:47
