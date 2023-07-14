@@ -1,5 +1,5 @@
 from flask import Flask, request, make_response, send_from_directory, jsonify
-import dbhelper,api_helper,dbcreds, uuid,time
+import dbhelper,api_helper,dbcreds, uuid
 
 app = Flask(__name__)
 
@@ -57,11 +57,11 @@ except:
 
 
 try:
-   @app.post('/api/image')
+   @app.post('/api/image_upload')
    #function gets called on api request
    def image_upload():
    
-      is_valid = api_helper.check_endpoint_info(request.form, ['description', 'type'])
+      is_valid = api_helper.check_endpoint_info(request.form, ['description', 'type', 'token'])
       
       if(is_valid != None):
          return make_response(jsonify(is_valid), 400)
@@ -73,23 +73,19 @@ try:
       
       
       results = []
-      file_count = 0
+
       for file in request.files.getlist('uploaded_image'):
          filename = api_helper.save_file(file)
          # If the filename is None, something has gone wrong
          if filename is None:
                return make_response(jsonify("Sorry, something has gone wrong"), 500)
          
-         result = dbhelper.run_proceedure('CALL image_create(?,?,?)', [filename, request.form['description'], request.form['type']])
+         result = dbhelper.run_proceedure('CALL image_create(?,?,?,?)', [filename, request.form['description'], request.form['type'], request.form['token']])
          
          if (type(results)==list):
                results.append('Success')
          else:
                results.append(str(result))
-               
-         file_count += 1
-         if file_count % 5 == 0:
-            time.sleep(5)
       
       return make_response(jsonify(results), 200)
          
@@ -136,7 +132,7 @@ try:
          return make_response(jsonify(is_valid), 400)
                   
       # Get the image information from the DB
-      results = dbhelper.run_proceedure('CALL get_all(?,?)', [request.args.get('created_at'), request.args.get('type')])
+      results = dbhelper.run_proceedure('CALL get_all(?)', [request.args.get('type')])
       # Make sure something came back from the DB that wasn't an error
       if(type(results) != list):
          return make_response(jsonify(str(results)), 500)

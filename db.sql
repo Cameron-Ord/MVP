@@ -27,7 +27,7 @@ CREATE TABLE `admin` (
   `username` varchar(100) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,6 +36,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (5,'admin','*2457BB2F79278E55372DEC337CA2ECE4835E0A5F');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,7 +53,7 @@ CREATE TABLE `admin_session` (
   `admin_id` int(10) unsigned DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,6 +62,7 @@ CREATE TABLE `admin_session` (
 
 LOCK TABLES `admin_session` WRITE;
 /*!40000 ALTER TABLE `admin_session` DISABLE KEYS */;
+INSERT INTO `admin_session` VALUES (8,'57262e62b6af4d33bdf3fffef784ce8d',5,'2023-07-13'),(9,'d457453f7f6c42f9959f9b155061f623',5,'2023-07-13'),(10,'7cb309c57a86457e9bfdc590bf8409b6',5,'2023-07-13'),(11,'6013366cd79043e8bb770d1115a81f2f',5,'2023-07-13'),(12,'448810c0c69b455b9a316117a27f0a97',5,'2023-07-13'),(13,'999430bd274b4a66a9ed5c8b618a4841',5,'2023-07-13'),(14,'afe9ca9dac774c6daf3392254b704d89',5,'2023-07-13'),(15,'965632666e804c6b9bbaa5585cc54f71',5,'2023-07-13'),(16,'7d8dcf3bc78b41a09804618ffd91c78a',5,'2023-07-13'),(17,'48bdb20604204009b0fdb17890a93811',5,'2023-07-13'),(18,'2a705b6a7de54eca9476dc61c70ab60f',5,'2023-07-13'),(19,'54c5e4da2abf4abbb62b4bbca9ba1699',5,'2023-07-13'),(20,'1dacb47b547e48d5abbc3648d19cda6c',5,'2023-07-13'),(21,'32fafd95291346f0a3041ec88215b711',5,'2023-07-13');
 /*!40000 ALTER TABLE `admin_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +80,7 @@ CREATE TABLE `images` (
   `created_at` datetime DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +89,6 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
-INSERT INTO `images` VALUES (44,'a449e4eb7f2342648c863ea32e03ae11.jpg','this is a description','2023-07-09 18:57:57','summer'),(45,'acd4bf8162894b1d8e89ab459e51dd92.jpg','this is a description','2023-07-09 18:58:02','summer'),(46,'51b221b20d844722a028f8fcff129636.jpg','this is a description','2023-07-09 18:58:05','summer'),(47,'1357e20671024e18aba8ee5c4ecd75d6.jpg','this is a description','2023-07-09 18:58:34','summer'),(48,'433e9860ee1c40c5a34b688cce9b9acf.jpg','this is a description','2023-07-09 18:59:29','summer'),(52,'e136f47fad1d411c9c5fad30cc25c627.jpg','this is a description','2023-07-09 23:03:23','summer'),(53,'13bc4322ca274501b81c2e6352672b0d.jpg','this is a description','2023-07-09 23:04:02','summer'),(54,'1ce54d3ef776436ba10a12d151ecd2e7.jpg','this is a description','2023-07-09 23:04:03','summer');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,11 +105,13 @@ UNLOCK TABLES;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `admin_login`(username_input varchar(200), password_input varchar(200), token_input varchar(300))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `admin_login`(username_input varchar (200), password_input varchar(200), token_input varchar(200))
     MODIFIES SQL DATA
 BEGIN
+	if (select username from admin order by id desc limit 1) = username_input and (select password from admin order by id desc limit 1) = PASSWORD(password_input) then
 	insert into admin_session (admin_id, token, created_at) values ((select admin.id from admin where username=username_input and password=PASSWORD(password_input)),token_input,now());
     select convert(token using "utf8") as token, admin_id from admin_session inner join admin on admin.id = admin_session.admin_id where admin_session.token = token_input and password = PASSWORD(password_input) and username=username_input;
+    end if;
     commit;
 END ;;
 DELIMITER ;
@@ -148,35 +151,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all`(created_at_input DATETIME, type_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all`(type_input varchar(100))
 BEGIN
 	
- DECLARE result_count INT;
-    
-    SELECT COUNT(*) INTO result_count
-    FROM images
-    WHERE created_at > created_at_input AND `type` = type_input;
-    
-    IF result_count > 0 and created_at_input is not null or result_count > 0 and (select created_at from images order by created_at desc limit 1) != created_at_input THEN
-        SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
-        FROM images
-        WHERE created_at > created_at_input AND `type` = type_input
-        ORDER BY created_at ASC
-        LIMIT 5;
-       
-    ELSEIF (select created_at from images order by created_at desc limit 1) = created_at_input then
-        SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
-        FROM images
-        WHERE created_at = created_at_input AND `type` = type_input
-        ORDER BY created_at ASC
-        LIMIT 5;
-    
-    ELSEif created_at_input is null then
+    IF type_input is not null then
         SELECT CONVERT(file_name using utf8) as file_name, CONVERT(`type` using utf8) as `type`, created_at
         FROM images
         WHERE `type` = type_input
-        ORDER BY created_at ASC
-        LIMIT 5;
+        ORDER BY created_at ASC;
     END IF;
 END ;;
 DELIMITER ;
@@ -203,19 +185,19 @@ BEGIN
         SELECT convert(created_at using "utf8") as created_at
         FROM images where `type` = type_input
         ORDER BY created_at ASC
-        LIMIT 5
+        LIMIT 6
     ) AS subquery
     ORDER BY created_at ASC
     LIMIT 1;
 	    
 	
-      ELSEIF created_at_input is not null and (select created_at from images order by created_at desc limit 1) != created_at_input then
+      ELSEIF created_at_input is not null and (select created_at from images where `type`=type_input order by created_at desc limit 1) != created_at_input then
        SELECT convert(created_at using "utf8") as created_at
     FROM (
         SELECT convert(created_at using "utf8") as created_at
         FROM images where created_at > created_at_input and `type` = type_input
         ORDER BY created_at ASC
-        LIMIT 5
+        LIMIT 6
     ) AS subquery
     ORDER BY created_at ASC
     LIMIT 1;
@@ -226,7 +208,7 @@ BEGIN
         SELECT convert(created_at using "utf8") as created_at
         FROM images where created_at = created_at_input and `type` = type_input
         ORDER BY created_at ASC
-        LIMIT 5
+        LIMIT 6
     ) AS subquery
     ORDER BY created_at ASC
     limit 1;
@@ -268,11 +250,14 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `image_create`(file_name_input varchar(500), description_input varchar(300), type_input varchar(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `image_create`(file_name_input varchar(500), description_input varchar(300), type_input varchar(100), token_input varchar(200))
     MODIFIES SQL DATA
 BEGIN
+	
+	if (select token from admin_session where token = token_input limit 1) = token_input then
 	INSERT INTO images(file_name, description,`type`, created_at) VALUES (file_name_input, description_input, type_input ,now());
 	SELECT LAST_INSERT_ID();
+	end if;
 	COMMIT;
 END ;;
 DELIMITER ;
@@ -290,4 +275,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-10  0:48:47
+-- Dump completed on 2023-07-13 20:48:30
