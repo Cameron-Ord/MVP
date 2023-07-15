@@ -103,8 +103,11 @@ DROP TABLE IF EXISTS `messages`;
 CREATE TABLE `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `content` varchar(300) DEFAULT NULL,
+  `date_sent` datetime DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `email` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +116,6 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (3,'test');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,11 +156,11 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `content_send`(content_input varchar(300))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `content_send`(name_input varchar(100),email_input varchar(200),content_input varchar(300))
     MODIFIES SQL DATA
 BEGIN
-	if content_input is not null then
-	insert into messages (content) values (content_input);
+	if name_input is not null and email_input is not null and content_input is not null then
+	insert into messages (name, email, content, date_sent) values (name_input ,email_input,content_input, now());
 	end if;
 	SELECT row_count() as "rows inserted";
 	commit;
@@ -324,4 +326,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-15 15:36:03
+-- Dump completed on 2023-07-15 15:59:21

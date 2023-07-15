@@ -8,12 +8,12 @@ try:
    @app.post('/api/contact')
    def admin_login():
       
-         error=api_helper.check_endpoint_info(request.json, ['content']) 
+         error=api_helper.check_endpoint_info(request.json, ['name', 'email', 'content']) 
          if(error !=None):
             return make_response(jsonify(error), 400)
 
-         results = dbhelper.run_proceedure('CALL content_send(?)', 
-            [request.json.get('content')])
+         results = dbhelper.run_proceedure('CALL content_send(?,?,?)', 
+            [request.json.get('name'),request.json.get('email'),request.json.get('content')])
 
          if(type(results) == list):
             return make_response(jsonify(results), 200)
@@ -121,6 +121,8 @@ except TypeError:
 except: 
    print('something went wrong')
 
+
+#this isn't used at the moment, but is being kept just in case
 
 try:
    @app.get('/api/images-date')
