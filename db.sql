@@ -53,7 +53,7 @@ CREATE TABLE `admin_session` (
   `admin_id` int(10) unsigned DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `admin_session` (
 
 LOCK TABLES `admin_session` WRITE;
 /*!40000 ALTER TABLE `admin_session` DISABLE KEYS */;
-INSERT INTO `admin_session` VALUES (8,'57262e62b6af4d33bdf3fffef784ce8d',5,'2023-07-13'),(9,'d457453f7f6c42f9959f9b155061f623',5,'2023-07-13'),(10,'7cb309c57a86457e9bfdc590bf8409b6',5,'2023-07-13'),(11,'6013366cd79043e8bb770d1115a81f2f',5,'2023-07-13'),(12,'448810c0c69b455b9a316117a27f0a97',5,'2023-07-13'),(13,'999430bd274b4a66a9ed5c8b618a4841',5,'2023-07-13'),(14,'afe9ca9dac774c6daf3392254b704d89',5,'2023-07-13'),(15,'965632666e804c6b9bbaa5585cc54f71',5,'2023-07-13'),(16,'7d8dcf3bc78b41a09804618ffd91c78a',5,'2023-07-13'),(17,'48bdb20604204009b0fdb17890a93811',5,'2023-07-13'),(18,'2a705b6a7de54eca9476dc61c70ab60f',5,'2023-07-13'),(19,'54c5e4da2abf4abbb62b4bbca9ba1699',5,'2023-07-13'),(20,'1dacb47b547e48d5abbc3648d19cda6c',5,'2023-07-13'),(21,'32fafd95291346f0a3041ec88215b711',5,'2023-07-13');
+INSERT INTO `admin_session` VALUES (8,'57262e62b6af4d33bdf3fffef784ce8d',5,'2023-07-13'),(9,'d457453f7f6c42f9959f9b155061f623',5,'2023-07-13'),(10,'7cb309c57a86457e9bfdc590bf8409b6',5,'2023-07-13'),(11,'6013366cd79043e8bb770d1115a81f2f',5,'2023-07-13'),(12,'448810c0c69b455b9a316117a27f0a97',5,'2023-07-13'),(13,'999430bd274b4a66a9ed5c8b618a4841',5,'2023-07-13'),(14,'afe9ca9dac774c6daf3392254b704d89',5,'2023-07-13'),(15,'965632666e804c6b9bbaa5585cc54f71',5,'2023-07-13'),(16,'7d8dcf3bc78b41a09804618ffd91c78a',5,'2023-07-13'),(17,'48bdb20604204009b0fdb17890a93811',5,'2023-07-13'),(18,'2a705b6a7de54eca9476dc61c70ab60f',5,'2023-07-13'),(19,'54c5e4da2abf4abbb62b4bbca9ba1699',5,'2023-07-13'),(20,'1dacb47b547e48d5abbc3648d19cda6c',5,'2023-07-13'),(21,'32fafd95291346f0a3041ec88215b711',5,'2023-07-13'),(22,'7ef845da6f864658abe290829d4e789a',5,'2023-07-13'),(23,'616a9dc319a54c0083b227f1940465f0',5,'2023-07-13'),(24,'547933a365d6433ca22c8e78b714a95e',5,'2023-07-13');
 /*!40000 ALTER TABLE `admin_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +80,7 @@ CREATE TABLE `images` (
   `created_at` datetime DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=419 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,32 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
+INSERT INTO `images` VALUES (394,'f3e6d869517c436ba4008ab3b519b23d.jpg','a photo','2023-07-13 20:50:00','summer'),(395,'505abb6ec0a44772a31fb5a0dca41aed.jpg','a photo','2023-07-13 20:50:00','summer'),(396,'cc81905f3ec34d0c896808078638c4da.jpg','a photo','2023-07-13 20:50:00','summer'),(397,'8ecbfeaf800d464d871e4e8b916279e6.jpg','a photo','2023-07-13 20:50:00','summer'),(398,'fa0b95a8c3bf406b867caa8af31eae02.jpg','a photo','2023-07-13 20:50:00','summer'),(399,'eceea07602134a389bbe44e12041f2e4.jpg','a photo','2023-07-13 20:50:00','summer'),(400,'3f5ab83c6bae4ddab4746b317740dde3.jpg','a photo','2023-07-13 20:50:00','summer'),(401,'6cffbda15cfa4e8a8ef036870882af82.jpg','a photo','2023-07-13 20:50:00','summer'),(402,'06b9012fa6f84cf1b0f2c6fe87977b68.jpg','a photo','2023-07-13 20:50:00','summer'),(403,'cb1ea869f7334763ba4defc983404bc1.jpg','a photo','2023-07-13 20:50:00','summer'),(404,'aa680f3e7a454ac69fa5e7b1d5be5f9a.jpg','a photo','2023-07-13 20:50:00','summer'),(405,'5fdfafa4000c4db4bcad7fecaa096cf1.jpg','a photo','2023-07-13 20:50:00','summer'),(406,'75947df5abf446ecb85e13bd5e100dfb.jpg','a photo','2023-07-13 20:50:00','summer'),(407,'f514afc92da347ad97f9a8592a28f31a.jpg','a photo','2023-07-13 20:50:00','summer'),(408,'46ac3a77534840ffaf1efcac02e1db7c.jpg','a photo','2023-07-13 20:50:00','summer'),(409,'7196fd07425149a8ba80f186746165d0.jpg','a photo','2023-07-13 20:50:00','summer'),(410,'8b6fb5bee9214c5cb8483cf8d4674fbc.jpg','a photo','2023-07-13 20:50:00','summer'),(415,'90a47e64700d4296b32fd131fcb6ee67.jpg','a photo','2023-07-13 20:52:20','black/white'),(416,'f47e807a363a4c72bc9dd69b97b48614.jpg','a photo','2023-07-13 20:52:20','black/white'),(417,'8dbec9d3786e459ebac802bbc84d948c.jpg','a photo','2023-07-13 20:52:20','black/white'),(418,'3114e638e9444fb48e58a0c86d588538.jpg','a photo','2023-07-13 20:52:20','black/white');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `content` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+INSERT INTO `messages` VALUES (3,'test');
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -113,6 +138,30 @@ BEGIN
     select convert(token using "utf8") as token, admin_id from admin_session inner join admin on admin.id = admin_session.admin_id where admin_session.token = token_input and password = PASSWORD(password_input) and username=username_input;
     end if;
     commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `content_send` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `content_send`(content_input varchar(300))
+    MODIFIES SQL DATA
+BEGIN
+	if content_input is not null then
+	insert into messages (content) values (content_input);
+	end if;
+	SELECT row_count() as "rows inserted";
+	commit;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -275,4 +324,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-13 20:48:30
+-- Dump completed on 2023-07-15 15:36:03
