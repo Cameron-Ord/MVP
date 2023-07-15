@@ -6,7 +6,7 @@ app = Flask(__name__)
 try:
 
    @app.post('/api/contact')
-   def admin_login():
+   def send_contact():
       
          error=api_helper.check_endpoint_info(request.json, ['name', 'email', 'content']) 
          if(error !=None):
