@@ -89,7 +89,6 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
-INSERT INTO `images` VALUES (394,'f3e6d869517c436ba4008ab3b519b23d.jpg','a photo','2023-07-13 20:50:00','summer'),(395,'505abb6ec0a44772a31fb5a0dca41aed.jpg','a photo','2023-07-13 20:50:00','summer'),(396,'cc81905f3ec34d0c896808078638c4da.jpg','a photo','2023-07-13 20:50:00','summer'),(397,'8ecbfeaf800d464d871e4e8b916279e6.jpg','a photo','2023-07-13 20:50:00','summer'),(398,'fa0b95a8c3bf406b867caa8af31eae02.jpg','a photo','2023-07-13 20:50:00','summer'),(399,'eceea07602134a389bbe44e12041f2e4.jpg','a photo','2023-07-13 20:50:00','summer'),(400,'3f5ab83c6bae4ddab4746b317740dde3.jpg','a photo','2023-07-13 20:50:00','summer'),(401,'6cffbda15cfa4e8a8ef036870882af82.jpg','a photo','2023-07-13 20:50:00','summer'),(402,'06b9012fa6f84cf1b0f2c6fe87977b68.jpg','a photo','2023-07-13 20:50:00','summer'),(403,'cb1ea869f7334763ba4defc983404bc1.jpg','a photo','2023-07-13 20:50:00','summer'),(404,'aa680f3e7a454ac69fa5e7b1d5be5f9a.jpg','a photo','2023-07-13 20:50:00','summer'),(405,'5fdfafa4000c4db4bcad7fecaa096cf1.jpg','a photo','2023-07-13 20:50:00','summer'),(406,'75947df5abf446ecb85e13bd5e100dfb.jpg','a photo','2023-07-13 20:50:00','summer'),(407,'f514afc92da347ad97f9a8592a28f31a.jpg','a photo','2023-07-13 20:50:00','summer'),(408,'46ac3a77534840ffaf1efcac02e1db7c.jpg','a photo','2023-07-13 20:50:00','summer'),(409,'7196fd07425149a8ba80f186746165d0.jpg','a photo','2023-07-13 20:50:00','summer'),(410,'8b6fb5bee9214c5cb8483cf8d4674fbc.jpg','a photo','2023-07-13 20:50:00','summer'),(415,'90a47e64700d4296b32fd131fcb6ee67.jpg','a photo','2023-07-13 20:52:20','black/white'),(416,'f47e807a363a4c72bc9dd69b97b48614.jpg','a photo','2023-07-13 20:52:20','black/white'),(417,'8dbec9d3786e459ebac802bbc84d948c.jpg','a photo','2023-07-13 20:52:20','black/white'),(418,'3114e638e9444fb48e58a0c86d588538.jpg','a photo','2023-07-13 20:52:20','black/white');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,4 +325,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-15 15:59:21
+-- Dump completed on 2023-07-15 16:53:27
