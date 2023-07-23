@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, send_from_directory, jsonify
+from flask import Flask, request, make_response, jsonify
 import dbhelper,api_helper,dbcreds, uuid
 
 app = Flask(__name__)
@@ -122,34 +122,7 @@ except:
    print('something went wrong')
 
 
-#this isn't used at the moment, but is being kept just in case
-
-try:
-   @app.get('/api/images-date')
-   def get_image_date():
-
-      is_valid = api_helper.check_endpoint_info(request.args, ['type'])
-      if(is_valid != None):
-         return make_response(jsonify(is_valid), 400)
-                  
-      # Get the image information from the DB
-      results = dbhelper.run_proceedure('CALL get_last_image(?,?)', [request.args.get('created_at'), request.args.get('type')])
-      # Make sure something came back from the DB that wasn't an error
-      if(type(results) != list):
-         return make_response(jsonify(str(results)), 500)
-      elif(len(results) == 0):
-         return make_response(jsonify("Invalid image id"), 400)
-
-            
-      return make_response(jsonify(results), 200)
-
-except TypeError:
-   print('Invalid entry, try again')
-   
-except: 
-   print('something went wrong')
-   
-   
+  
 try:
    @app.get('/api/images')
    def get_images():
